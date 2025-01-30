@@ -1,6 +1,4 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
+
 import os
 from flask import Flask, request, jsonify, url_for
 from flask_migrate import Migrate
@@ -80,7 +78,7 @@ def create_people():
         existing_person = Personajes.query.filter_by(name=request_body["name"]).first()
 
         if existing_person:
-            return jsonify({"message": "El personaje ya existe"}), 409  # Changed to 409 Conflict
+            return jsonify({"message": "El personaje ya existe"}), 409  
 
         new_person = Personajes(
             name=request_body['name'],
@@ -94,7 +92,7 @@ def create_people():
         )
         db.session.add(new_person)
         db.session.commit()
-        return jsonify(new_person.serialize()), 201  # Changed to 201 Created
+        return jsonify(new_person.serialize()), 201  
 
     except KeyError as ke:
         return jsonify({"message": f"Falta el campo: {str(ke)}"}), 400
@@ -122,7 +120,7 @@ def delete_people(people_id):
 @app.route('/users/favorites/people/<int:people_id>', methods=['POST'])
 def create_fav_people(people_id):
     try:
-        # Dado que no hay autenticación, asumimos que el usuario actual tiene id=1
+        
         usuario_id = 1
 
         if not Usuario.query.filter_by(id=usuario_id).first():
@@ -146,7 +144,7 @@ def create_fav_people(people_id):
         db.session.commit()
 
         print(new_favorito.serialize())
-        return jsonify(new_favorito.serialize()), 201  # Changed to 201 Created
+        return jsonify(new_favorito.serialize()), 201 
 
     except Exception as e:
         db.session.rollback()
@@ -156,7 +154,7 @@ def create_fav_people(people_id):
 @app.route('/users/favorites/people/<int:people_id>', methods=['DELETE'])
 def delete_fav_people(people_id):
     try:
-        # Dado que no hay autenticación, asumimos que el usuario actual tiene id=1
+        
         usuario_id = 1
 
         existing_favorito = Favorito.query.filter_by(personajes_id=people_id, usuario_id=usuario_id).first()
@@ -221,7 +219,7 @@ def create_planet():
         existing_planet = Planetas.query.filter_by(name=request_body["name"]).first()
 
         if existing_planet:
-            return jsonify({"message": "El planeta ya existe"}), 409  # Changed to 409 Conflict
+            return jsonify({"message": "El planeta ya existe"}), 409  
 
         new_planet = Planetas(
             name=request_body['name'],
@@ -236,7 +234,7 @@ def create_planet():
         )
         db.session.add(new_planet)
         db.session.commit()
-        return jsonify(new_planet.serialize()), 201  # Changed to 201 Created
+        return jsonify(new_planet.serialize()), 201  
 
     except KeyError as ke:
         return jsonify({"message": f"Falta el campo: {str(ke)}"}), 400
@@ -264,7 +262,7 @@ def delete_planet(planet_id):
 @app.route('/users/favorites/planet/<int:planet_id>', methods=['POST'])
 def create_fav_planet(planet_id):
     try:
-        # Dado que no hay autenticación, asumimos que el usuario actual tiene id=1
+        
         usuario_id = 1
 
         if not Usuario.query.filter_by(id=usuario_id).first():
@@ -276,7 +274,7 @@ def create_fav_planet(planet_id):
         existing_favorito = Favorito.query.filter_by(planetas_id=planet_id, usuario_id=usuario_id).first()
 
         if existing_favorito:
-            return jsonify({"message": "El planeta ya está en favoritos"}), 409  # Changed to 409 Conflict
+            return jsonify({"message": "El planeta ya está en favoritos"}), 409  
 
         new_favorito = Favorito(
             usuario_id=usuario_id,
@@ -288,7 +286,7 @@ def create_fav_planet(planet_id):
         db.session.commit()
 
         print(new_favorito.serialize())
-        return jsonify(new_favorito.serialize()), 201  # Changed to 201 Created
+        return jsonify(new_favorito.serialize()), 201  
 
     except Exception as e:
         db.session.rollback()
@@ -298,7 +296,7 @@ def create_fav_planet(planet_id):
 @app.route('/users/favorites/planet/<int:planet_id>', methods=['DELETE'])
 def delete_fav_planet(planet_id):
     try:
-        # Dado que no hay autenticación, asumimos que el usuario actual tiene id=1
+        
         usuario_id = 1
 
         existing_favorito = Favorito.query.filter_by(planetas_id=planet_id, usuario_id=usuario_id).first()
@@ -366,7 +364,7 @@ def create_vehicle():
         existing_vehicle = Vehiculos.query.filter_by(name=request_body["name"]).first()
 
         if existing_vehicle:
-            return jsonify({"message": "El vehiculo ya existe"}), 409  # Changed to 409 Conflict
+            return jsonify({"message": "El vehiculo ya existe"}), 409  
 
         new_vehicle = Vehiculos(
             name=request_body['name'],
@@ -380,12 +378,12 @@ def create_vehicle():
             max_atmosphering_speed=request_body['max_atmosphering_speed'],
             cargo_capacity=request_body['cargo_capacity'],
             consumables=request_body['consumables'],
-            films=json.dumps(request_body['films']),    # Serialize list
-            pilots=json.dumps(request_body['pilots'])   # Serialize list
+            films=json.dumps(request_body['films']),    
+            pilots=json.dumps(request_body['pilots'])   
         )
         db.session.add(new_vehicle)
         db.session.commit()
-        return jsonify(new_vehicle.serialize()), 201  # Changed to 201 Created
+        return jsonify(new_vehicle.serialize()), 201  
 
     except KeyError as ke:
         return jsonify({"message": f"Falta el campo: {str(ke)}"}), 400
@@ -413,7 +411,7 @@ def delete_vehicle(vehicle_id):
 @app.route('/users/favorites/vehicle/<int:vehicle_id>', methods=['POST'])
 def create_fav_vehicle(vehicle_id):
     try:
-        # Dado que no hay autenticación, asumimos que el usuario actual tiene id=1
+       
         usuario_id = 1
 
         if not Usuario.query.filter_by(id=usuario_id).first():
@@ -425,7 +423,7 @@ def create_fav_vehicle(vehicle_id):
         existing_favorito = Favorito.query.filter_by(vehiculos_id=vehicle_id, usuario_id=usuario_id).first()
 
         if existing_favorito:
-            return jsonify({"message": "El vehiculo ya está en favoritos"}), 409  # Changed to 409 Conflict
+            return jsonify({"message": "El vehiculo ya está en favoritos"}), 409  
 
         new_favorito = Favorito(
             usuario_id=usuario_id,
@@ -437,7 +435,7 @@ def create_fav_vehicle(vehicle_id):
         db.session.commit()
 
         print(new_favorito.serialize())
-        return jsonify(new_favorito.serialize()), 201  # Changed to 201 Created
+        return jsonify(new_favorito.serialize()), 201  
 
     except Exception as e:
         db.session.rollback()
@@ -447,7 +445,7 @@ def create_fav_vehicle(vehicle_id):
 @app.route('/users/favorites/vehicle/<int:vehicle_id>', methods=['DELETE'])
 def delete_fav_vehicle(vehicle_id):
     try:
-        # Dado que no hay autenticación, asumimos que el usuario actual tiene id=1
+        
         usuario_id = 1
 
         existing_favorito = Favorito.query.filter_by(vehiculos_id=vehicle_id, usuario_id=usuario_id).first()
@@ -486,7 +484,7 @@ def handle_users():
 
 @app.route('/users/favorites', methods=['GET'])
 def handle_user_favorites():
-    # Dado que no hay autenticación, asumimos que el usuario actual tiene id=1
+    
     usuario_id = 1
 
     all_favorites = Favorito.query.filter_by(usuario_id=usuario_id).all()
